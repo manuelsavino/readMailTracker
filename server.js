@@ -3,7 +3,7 @@ const express = require('express'),
       path = require('path')
 app.use('/public', express.static(path.join(__dirname, 'public')))
 
-let PORT = process.env.port || 3000;
+let PORT = process.env.PORT || 3000;
 
 app.get("/", (req, res)=>{
     res.send("hello")
@@ -14,8 +14,6 @@ app.get("/:sender/:subject", (req, res)=> {
     console.log(`${sender} ${subject}`)
     res.sendFile(path.join(__dirname, "./public", "pix.png"));
 })
-
-
 
 
 app.listen(PORT, ()=> {
