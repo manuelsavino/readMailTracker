@@ -3,7 +3,11 @@ const mongoose = require('mongoose'),
 
 let recordSchema = new Schema({
     to: String,
-    subject: String
+    subject: String,
+    date: {
+        type: Date,
+        default: Date.now
+    }
 })
 
 let Record = mongoose.model("Record", recordSchema)
