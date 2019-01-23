@@ -1,9 +1,15 @@
+require("dotenv").config();
 const express = require('express'),
       app = express(),
       path = require('path'),
       mongoose = require('mongoose'),
       record = require('./models/record'),
-      nodemailer = require('nodemailer')
+      nodemailer = require('nodemailer'),
+      bodyParser = require('body-parser')
+
+
+
+app.use(bodyParser.urlencoded({ extended: false }));
 app.use('/public', express.static(path.join(__dirname, 'public')))
 
 mongoose.connect(
@@ -40,7 +46,6 @@ app.get("/sendMail", (req, res)=>{
 });
 
 app.post("/email", (req, res) => {
-
     const {name, email, subject, message} = req.body;
 
     async function main() {
@@ -55,11 +60,13 @@ app.post("/email", (req, res) => {
         });
         let mailOptions = { from: '"Form Submission Bot" <noreply@manuelsavino.com>', 
         to: "manuelsavino@gmail.com", 
-        subject: subject, 
+        subject: "New Form Submission", 
         text: "Form Submission", 
         html: `
-        From: ${name}
-        Email: ${email}
+        From: ${name} <br />
+        Email: ${email} <br />
+        Subject: ${subject} <br />
+        
         Message: <p>${message}</p>` }; 
         let info = await transporter.sendMail(mailOptions)
         console.log("Message sent: %s", info.messageId);
