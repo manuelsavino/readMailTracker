@@ -29,7 +29,7 @@ app.post("/record", (req, res)=> {
           console.log(err);
       }
       else{
-          res.json(doc);
+          res.send(`http://fast-sierra-79160.herokuapp.com/track/${doc._id}`);
       }
       
     });
@@ -83,6 +83,13 @@ app.get("/track/:id", (req, res) => {
         }
   });
 });
+
+app.get("/:id", (req, res)=>{
+    const {id: _id} = req.params
+    record.findById({_id}, (err, resp)=>{
+        res.json(resp)
+    })
+})
 
 app.listen(PORT, () => {
   console.log(`listening on ${PORT}`);
