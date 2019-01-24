@@ -10,10 +10,10 @@ let recordSchema = new Schema({
     default: Date.now
   },
   accessed: [
-      {
-        date: Date
-      }
-    ]
+    {
+      date: { type: Date, default: Date.now }
+    }
+  ]
 });
 
 let Record = mongoose.model("Record", recordSchema)

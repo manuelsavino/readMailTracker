@@ -23,7 +23,7 @@ app.get("/", (req, res) => {
 
 app.post("/record", (req, res)=> {
     const {from, to, subject} = req.body
-    const newRecord = { to, from ,subject };
+    const newRecord = { to, from ,subject};
     record.create(newRecord, (err, doc) => {
       if (err) {
           console.log(err);
@@ -63,15 +63,25 @@ app.get("/sendMail", (req, res) => {
   res.send("ok");
 });
 
-app.get("/track/:to/:subject", (req, res) => {
-  const { to, subject } = req.params;
-  const newRecord = { to, subject };
-  record.create(newRecord, (err, doc) => {
-    if (!err) {
-      console.log(doc);
-    }
+app.get("/track", (req,res)=> {
+    record.find({}, (err, resp)=> {
+        res.json(resp)
+    })
+})
+
+app.get("/track/:id", (req, res) => {
+  const { id: _id } = req.params;
+  console.log(_id)
+  record.findByIdAndUpdate({ _id }, {$push: {accessed: {Date: Date.now()} } }, (err, doc)=> {
+        if(err)
+        {
+            console.log(err)
+            res.sendFile(path.join(__dirname, "./public", "pix.png"));
+        }
+        else{   
+            res.sendFile(path.join(__dirname, "./public", "pix.png"));
+        }
   });
-  res.sendFile(path.join(__dirname, "./public", "pix.png"));
 });
 
 app.listen(PORT, () => {
